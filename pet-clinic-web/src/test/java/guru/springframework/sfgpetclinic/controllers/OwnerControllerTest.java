@@ -63,6 +63,6 @@ class OwnerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("notimplemented"));
 
-        verifyNoInteractions(ownerService);
+        verifyZeroInteractions(ownerService);
     }
 }
