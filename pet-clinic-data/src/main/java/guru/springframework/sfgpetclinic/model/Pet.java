@@ -16,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
+@ToString(exclude = "owner")
 @Table(name = "pets")
 public class Pet extends BaseEntity{
 

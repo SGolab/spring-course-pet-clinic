@@ -16,15 +16,15 @@
     </tr>
     <tr>
         <th>Address</th>
-        <td th:text="*{address}" /></td>
+        <td th:text="*{address}"></td>
     </tr>
     <tr>
         <th>City</th>
-        <td th:text="*{city}" /></td>
+        <td th:text="*{city}"></td>
     </tr>
     <tr>
         <th>Telephone</th>
-        <td th:text="*{telephone}" /></td>
+        <td th:text="*{telephone}"></td>
     </tr>
 </table>
 
@@ -33,9 +33,9 @@
 <a th:href="@{{id}/pets/new(id=${owner.id})}" class="btn btn-default">Add
     New Pet</a>
 
-<br />
-<br />
-<br />
+<br/>
+<br/>
+<br/>
 <h2>Pets and Visits</h2>
 
 <table class="table table-striped">
@@ -44,12 +44,12 @@
         <td valign="top">
             <dl class="dl-horizontal">
                 <dt>Name</dt>
-                <dd th:text="${pet.name}" /></dd>
+                <dd th:text="${pet.name}"></dd>
                 <dt>Birth Date</dt>
                 <dd
-                        th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}" /></dd>
+                        th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}"></dd>
                 <dt>Type</dt>
-                <dd th:text="${pet.petType}" /></dd>
+                <dd th:text="${pet.petType}"></dd>
             </dl>
         </td>
         <td valign="top">

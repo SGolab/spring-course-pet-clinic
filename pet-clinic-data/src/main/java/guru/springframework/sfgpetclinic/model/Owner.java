@@ -13,6 +13,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "owners")
 public class Owner extends Person {
 
