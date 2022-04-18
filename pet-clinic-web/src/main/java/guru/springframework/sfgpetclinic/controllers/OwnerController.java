@@ -6,10 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collection;
@@ -70,6 +67,37 @@ public class OwnerController {
             model.addAttribute("selections", results);
             return "owners/ownersList";
         }
+    }
 
+    @GetMapping("/new")
+    public String addNewOwner(Model model) {
+        Owner owner = Owner.builder().build();
+        model.addAttribute("owner", owner);
+        return "owners/createOrUpdateOwnerForm";
+    }
+
+    @PostMapping("/new")
+    public String processNewOwner(@ModelAttribute Owner owner) {
+        Owner savedOwner = ownerService.save(owner);
+        return String.format("redirect:/owners/%d", savedOwner.getId());
+    }
+
+    @GetMapping("/{id}/update")
+    public String updateOwner(Model model, @PathVariable Long id) {
+        Owner owner = ownerService.findById(id);
+
+        if (owner != null) {
+            model.addAttribute("owner", owner);
+            return "owners/createOrUpdateOwnerForm";
+        } else {
+            throw new IllegalArgumentException(String.format("Owner with id: %d was not found", id));
+        }
+    }
+
+    @PostMapping("/{id}/update")
+    public String processUpdateOwner(@ModelAttribute Owner owner, @PathVariable Long id) {
+        owner.setId(id);
+        Owner savedOwner = ownerService.save(owner);
+        return String.format("redirect:/owners/%d", savedOwner.getId());
     }
 }

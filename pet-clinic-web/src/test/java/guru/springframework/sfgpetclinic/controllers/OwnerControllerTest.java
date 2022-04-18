@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -105,6 +106,53 @@ class OwnerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("owners/ownersList"))
                 .andExpect(model().attribute("selections", hasSize(5)));
+    }
 
+    @Test
+    void addNewOwnerTest() throws Exception {
+        mockMvc.perform(get("/owners/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/createOrUpdateOwnerForm"))
+                .andExpect(model().attributeExists("owner"));
+    }
+
+    @Test
+    void updateOwnerTest() throws Exception {
+        when(ownerService.findById(anyLong())).thenReturn(Owner.builder().id(1L).build());
+
+        mockMvc.perform(get("/owners/1/update"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/createOrUpdateOwnerForm"))
+                .andExpect(model().attribute("owner", hasProperty("id")));
+    }
+
+    @Test
+    void processNewOwnerTest() throws Exception {
+        Owner owner = Owner.builder().id(1L).build();
+
+        when(ownerService.save(any())).thenReturn(owner);
+
+        mockMvc.perform(post("/owners/new")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("id", "")
+                        .param("firstName", "Filip")
+                        .param("lastName", "Pieszczynski"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/owners/1"));
+    }
+
+    @Test
+    void processUpdateOwnerTest() throws Exception {
+        Owner owner = Owner.builder().id(1L).build();
+
+        when(ownerService.save(any())).thenReturn(owner);
+
+        mockMvc.perform(post("/owners/1/update")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("id", "")
+                        .param("firstName", "Filip")
+                        .param("lastName", "Pieszczynski"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/owners/1"));
     }
 }
