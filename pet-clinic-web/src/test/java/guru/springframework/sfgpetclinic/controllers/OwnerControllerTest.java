@@ -5,6 +5,7 @@ import guru.springframework.sfgpetclinic.services.OwnerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -114,6 +115,8 @@ class OwnerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("owners/createOrUpdateOwnerForm"))
                 .andExpect(model().attributeExists("owner"));
+
+        verifyZeroInteractions(ownerService);
     }
 
     @Test
@@ -124,6 +127,8 @@ class OwnerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("owners/createOrUpdateOwnerForm"))
                 .andExpect(model().attribute("owner", hasProperty("id")));
+
+        verifyZeroInteractions(ownerService);
     }
 
     @Test
@@ -132,13 +137,11 @@ class OwnerControllerTest {
 
         when(ownerService.save(any())).thenReturn(owner);
 
-        mockMvc.perform(post("/owners/new")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("id", "")
-                        .param("firstName", "Filip")
-                        .param("lastName", "Pieszczynski"))
+        mockMvc.perform(post("/owners/new"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/owners/1"));
+
+        verify(ownerService).save(ArgumentMatchers.any());
     }
 
     @Test
@@ -147,12 +150,10 @@ class OwnerControllerTest {
 
         when(ownerService.save(any())).thenReturn(owner);
 
-        mockMvc.perform(post("/owners/1/update")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("id", "")
-                        .param("firstName", "Filip")
-                        .param("lastName", "Pieszczynski"))
+        mockMvc.perform(post("/owners/1/update"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/owners/1"));
+
+        verify(ownerService).save(ArgumentMatchers.any());
     }
 }
