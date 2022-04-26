@@ -46,9 +46,6 @@ public class Owner extends Person {
      * @param name to test
      * @return true if pet name is already in use
      */
-
-
-
     public Pet getPet(String name) {
         return getPet(name, false);
     }
