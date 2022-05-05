@@ -88,7 +88,6 @@ class VisitControllerTest {
                 .andExpect(view().name(PETS_CREATE_OR_UPDATE_VISIT_FORM));
     }
 
-
     @Test
     void processNewVisitForm() throws Exception {
         mockMvc.perform(post(visitsUri)
